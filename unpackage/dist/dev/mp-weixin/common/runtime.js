@@ -109,7 +109,7 @@
 /******/ 		if(installedCssChunks[chunkId]) promises.push(installedCssChunks[chunkId]);
 /******/ 		else if(installedCssChunks[chunkId] !== 0 && cssChunks[chunkId]) {
 /******/ 			promises.push(installedCssChunks[chunkId] = new Promise(function(resolve, reject) {
-/******/ 				var href = "" + ({"components/common/nav-bar":"components/common/nav-bar","components/uni-search-bar/uni-search-bar":"components/uni-search-bar/uni-search-bar","components/uni-ui/uni-status-bar/uni-status-bar":"components/uni-ui/uni-status-bar/uni-status-bar","components/uni-icons/uni-icons":"components/uni-icons/uni-icons"}[chunkId]||chunkId) + ".wxss";
+/******/ 				var href = "" + ({"components/common/f-list":"components/common/f-list","components/common/nav-bar":"components/common/nav-bar","components/uni-search-bar/uni-search-bar":"components/uni-search-bar/uni-search-bar","components/uni-ui/uni-status-bar/uni-status-bar":"components/uni-ui/uni-status-bar/uni-status-bar","components/uni-icons/uni-icons":"components/uni-icons/uni-icons"}[chunkId]||chunkId) + ".wxss";
 /******/ 				var fullhref = __webpack_require__.p + href;
 /******/ 				var existingLinkTags = document.getElementsByTagName("link");
 /******/ 				for(var i = 0; i < existingLinkTags.length; i++) {

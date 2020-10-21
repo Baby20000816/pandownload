@@ -9,7 +9,7 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "uni-app",
     "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "##1187ff"
+    "backgroundColor": "#1187ff"
   },
   "tabBar": {
     "backgroundColor": "#FFFFFF",
@@ -37,5 +37,6 @@
       }
     ]
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap42.json"
 }

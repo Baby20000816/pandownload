@@ -2,7 +2,7 @@
 	<view>
 		<!-- 自定义导航栏 -->
 		<nav-bar>
-			<text slot="left" class="font-md ml-3 text-white">首页</text>
+			<text slot="left" class="font-md ml-3">首页</text>
 			<template slot="right">
 				<view
 					class="flex align-center justify-center bg-icon rounded-circle mr-3"
@@ -18,34 +18,58 @@
 				</view>
 			</template>
 		</nav-bar>
-		<view class="flex" style="height: 1000px;">
-			<view>
-				<view class="ml-4" style="width: 700rpx;border-radius: 30rpx;">
-					<!-- <text class="iconfont icon-sousuo mr-1" style="color:#a7a39f;"></text>
-					<text style="color: #9b9c9d;">搜索网盘文件</text>-->
-					<!-- <input /> -->
+		<view class="px-3 py-2">
+			<view class="position-relative">
+				<view class="flex align-center justify-center text-light-muted" style="width: 70rpx;height: 70rpx;position: absolute;top: 0;left: 0;">
+					<text class="iconfont icon-sousuo"></text>
 				</view>
-				<uni-search-bar  :radius="20"  placeholder="搜索网盘文件" @confirm="search" cancelButton="none"></uni-search-bar>
+				<!-- <uni-search-bar :radius="20"  placeholder="搜索网盘文件" @confirm="search" cancelButton="none"></uni-search-bar> -->
+				<input style="height: 70rpx;padding-left: 70rpx;" type="text" class="bg-lsight font-md rounded-circle" placeholder="搜索网盘文件"/>
 			</view>
 		</view>
+		<view v-for="(item,index) in lists" :key="index">
+			<fList :item="item"></fList>
+		</view>
+		
 	</view>
 </template>
-
 <script>
 import navBar from '@/components/common/nav-bar.vue';
 import uniSearchBar from '@/components/uni-search-bar/uni-search-bar.vue';
+import fList from '@/components/common/f-list.vue'
 export default {
 	components: {
 		navBar,
-		uniSearchBar
+		uniSearchBar,
+		fList
 	},
 	data() {
 		return {
-			title: 'Hello'
+			title: 'Hello',
+			lists:[],
 		};
 	},
-	onLoad() {},
-	methods: {}
+	onLoad() {
+		this.getShare();
+	},
+	methods: {
+		getShare(){
+			uni.request({
+				url: 'http://127.0.0.1:7001/list',
+				method: 'GET',
+				success: res => {
+					this.lists = res.data.data;
+					// console.log(this.lists)
+				},
+				fail: function(err) {
+					uni.showToast({
+						title: '请求失败'
+					});
+				},
+				
+			})
+		},
+	}
 };
 </script>
 

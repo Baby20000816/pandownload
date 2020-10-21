@@ -1,6 +1,7 @@
 {
   "usingComponents": {
+    "nav-bar": "/components/common/nav-bar",
     "uni-search-bar": "/components/uni-search-bar/uni-search-bar",
-    "nav-bar": "/components/common/nav-bar"
+    "f-list": "/components/common/f-list"
   }
 }

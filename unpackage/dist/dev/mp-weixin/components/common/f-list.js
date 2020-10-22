@@ -126,7 +126,6 @@ Object.defineProperty(exports, "__esModule", { value: true });exports.default = 
 //
 //
 //
-//
 
 var icons = {
   dir: {
@@ -159,6 +158,14 @@ var icons = {
     iconClass: function iconClass() {
       var item = icons[this.item.type];
       return "".concat(item.icon, " ").concat(item.color);
+    } },
+
+  methods: {
+    select: function select() {
+      this.$emit('select', {
+        index: this.index,
+        value: !this.item.checked });
+
     } } };exports.default = _default;
 
 /***/ })

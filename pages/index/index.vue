@@ -8,6 +8,7 @@
 					<view
 						class="flex align-center justify-center bg-light rounded-circle mr-3"
 						style="width: 60rpx; height: 60rpx;"
+						@tap="openAddDialog"
 					>
 						<text class="iconfont icon-zengjia"></text>
 					</view>
@@ -68,6 +69,17 @@
 		<f-dialog ref="rename">
 			<input type="text" v-model="renameValue" class="flex-1 bg-light rounded px-2" style="height: 95rpx;" placeholder="重命名" />
 		</f-dialog>
+		<f-dialog ref="newdir">
+			<input type="text" v-model="newdirname" class="flex-1 bg-light rounded px-2" style="height: 95rpx;" placeholder="新建文件夹名称" />
+		</f-dialog>
+		<uni-popup ref="add" type="bottom">
+			<view class="bg-white flex" style="height: 200rpx;">
+				<view class="flex-1 flex align-center justify-center flex-column" hover-class="bg-light" v-for="(item,index) in addList" :key="index" @tap="handleAddEvent(item)">
+					<text style="width: 110rpx; height: 110rpx;" class="rounded-circle bg-light iconfont flex align-center justify-center" :class="item.icon+' '+item.color"></text>
+					<text class="font text-muted">{{item.name}}</text>
+				</view>
+			</view>
+		</uni-popup>
 	</view>
 </template>
 <script>
@@ -75,18 +87,38 @@ import navBar from '@/components/common/nav-bar.vue';
 import uniSearchBar from '@/components/uni-search-bar/uni-search-bar.vue';
 import fList from '@/components/common/f-list.vue';
 import fDialog from '@/components/common/f-dialog.vue';
+import uniPopup from '@/components/uni-ui/uni-popup/uni-popup.vue'
 export default {
 	components: {
 		navBar,
 		uniSearchBar,
 		fList,
-		fDialog
+		fDialog,
+		uniPopup
 	},
 	data() {
 		return {
 			title: 'Hello',
 			renameValue:'',
-			lists: []
+			lists: [],
+			addList:[{
+			          icon:"icon-file-b-6",
+			          color:"text-success",
+			          name:"上传图片"
+			        },{
+			          icon:"icon-file-b-9",
+			          color:"text-primary",
+			          name:"上传视频"
+			        },{
+			          icon:"icon-file-b-8",
+			          color:"text-muted",
+			          name:"上传文件"
+			        },{
+			          icon:"icon-file-b-2",
+			          color:"text-warning",
+			          name:"新建文件夹",
+			        }],
+			newdirname:''
 		};
 	},
 	onLoad() {
@@ -191,6 +223,37 @@ export default {
 						});
 					}
 					this.checkList[0].name = this.renameValue;
+					close();
+				});
+				break;
+				default:
+				break;
+			}
+		},
+		openAddDialog(){
+			this.$refs.add.open();
+		},
+		handleAddEvent(item){
+			this.$refs.add.close();
+			switch(item.name){
+				case '新建文件夹':
+				this.$refs.newdir.open(close =>{
+					if(this.newdirname == ''){
+						return uni.showToast({
+							title:'文件夹名称不能为空',
+							icon:'none'
+						});
+					}
+					this.lists.push({
+						type:'dir',
+						name:this.newdirname,
+						create_time:'2020-10-22 17:00',
+						checked: false
+					});
+					uni.showToast({
+						title:'新建文件夹成功',
+						icon:'none'
+					});
 					close();
 				});
 				break;

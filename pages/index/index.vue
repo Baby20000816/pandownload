@@ -45,6 +45,18 @@
 		<view>
 			<fList v-for="(item, index) in lists" :key="index" :item="item" :index="index" @select="select"></fList>
 		</view>
+		<view v-if="checkCount > 0">
+		      <view class="flex align-stretch bg-primary text-white fixed-bottom">
+		        <view class="flex-1 flex flex-column align-center justify-center"
+		        style="line-height: 1.5;"
+		        v-for="(item,index) in actions"
+		        :key="index"
+		        hover-class="bg-hover-primary">
+		          <text class="iconfont" :class="item.icon"></text>
+		          {{ item.name }}
+		        </view>
+		      </view>
+		    </view>  
 	</view>
 </template>
 <script>
@@ -72,6 +84,30 @@ export default {
 		},
 		checkCount() {
 			return this.checkList.length;
+		},
+		actions(){
+			if(this.checkCount >1 ){
+				return [{
+					icon:"icon-xiazai",
+					name:"下载"
+				},{
+					icon:"icon-shanchu",
+					name:"删除"
+				}]
+			}
+			return[{
+				icon:"icon-xiazai",
+				name:"下载"
+			},{
+				icon:"icon-fenxiang-1",
+				name:"分享"
+			},{
+				icon:"icon-shanchu",
+				name:"删除"
+			},{
+				icon:"icon-chongmingming",
+				name:"重命名"
+			}]
 		}
 	},
 	methods: {

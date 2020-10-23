@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<view class="fixed-top bg-white" style="background-color: #1187ff;">
+		<view class="fixed-top bg-white" style="background-color: #ffffff;">
 			<uni-status-bar></uni-status-bar>
 			<view style="height: 44px;" class="flex border-bottom align-center">
 				<view class="flex-1 flex"><slot name="left"></slot></view>

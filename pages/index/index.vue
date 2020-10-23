@@ -29,13 +29,6 @@
 		</nav-bar>
 		<view class="px-3 py-2">
 			<view class="position-relative">
-				<view
-					class="flex align-center justify-center text-light-muted"
-					style="width: 70rpx;height: 70rpx;position: absolute;top: 0;left: 0;"
-				>
-					<text class="iconfont icon-sousuo"></text>
-				</view>
-				<!-- <uni-search-bar :radius="20"  placeholder="搜索网盘文件" @confirm="search" cancelButton="none"></uni-search-bar> -->
 				<input
 					style="height: 70rpx;padding-left: 70rpx;"
 					type="text"
@@ -317,7 +310,7 @@ export default {
 		doEvent(item) {
 			switch (item.type) {
 				case 'image':
-					let images = this.list.filter(item => {
+					let images = this.lists.filter(item => {
 						return item.type === 'image';
 					});
 					uni.previewImage({

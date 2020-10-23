@@ -1,17 +1,17 @@
 <template>
   <view>
     <view class="p-3 flex align-center">
-<!--      <image
-        src="/static/me.jpg"
+     <image
+        src="/static/default.jpg"
         style="width: 120rpx;height: 120rpx;"
         class="rounded-circle flex-shrink mr-3"
-      ></image> -->
+      ></image>
       <view class="flex-1 flex flex-column text-muted font">
         <view class="flex align-end">
-          <text class="font-lg text-dark mr-2">陶然然</text>
-          女 江苏
+          <text class="font-lg text-dark mr-2">吴家浩</text>
+          男 江苏
         </view>
-        <text class="text-ellipsis">软件工程师</text>
+        <text class="text-ellipsis">软件学院学生</text>
       </view>
     </view>
     <view class="bg-light" style="height: 20rpx;"></view>

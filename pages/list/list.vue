@@ -10,52 +10,55 @@
 			>
 				<text class="font-md">{{ item.name }}</text>
 				<text
-					style="height: 8rpx; width: 140rpx;"
+					style="height: 8rpx;width: 140rpx;"
 					class="rounded"
 					:class="tabIndex === index ? 'bg-main' : 'bg-white'"
 				></text>
 			</view>
 		</view>
-
-		<swiper
-			:duration="250"
-			class="flex-1 flex"
-			:current="tabIndex"
-			@change="changeTab($event.detail.current)"
-		></swiper>
-		<swiper-item class="flex-1 flex" v-for="(item, index) in tabBars" :key="index">
-			<scroll-view scroll-y="true" class="flex-1">
-				<view style="height: 60rpx;" class="bg-light flex align-center font-sm px-2 text-muted">
-					下载中({{ downing.length }})
-				</view>
-				<f-list v-for="(item, index) in downing" :key="'i' + index" :item="item" :index="index">
-					<view style="height: 70rpx;" class="flex align-center text-main">
-						<text class="iconfont icon-zanting"></text>
-						<text class="ml-1">{{ item.download }}</text>
+		<!-- swiper内容随着上面的tab切换联动 -->
+		<swiper :duration="250" class="flex-1 flex" :current="tabIndex" @change="changeTab($event.detail.current)">
+			<swiper-item class="flex-1 flex" v-for="(item, index) in tabBars" :key="index">
+				<scroll-view scroll-y="true" class="flex-1">
+					<view class="bg-light flex align-center font-sm px-2 text-muted" style="height: 60rpx;">
+						文件下载至：storage/xxxx/xxxx
 					</view>
-					<progress slot="bottom" :percent="item.download" activeColor="#009CFF" :stroke-width="4" />
-				</f-list>
-				<view class="p-2 border-bottom border-light-secondary font text-muted">
-					下载完成({{ downed.length }})
-				</view>
-				<f-list
-					v-for="(item, index) in downed"
-					:key="'d' + index"
-					:item="item"
-					:index="index"
-					:showRight="false"
-				></f-list>
-			</scroll-view>
-		</swiper-item>
+					<view class="p-2 border-bottom border-light-secondary font text-muted">
+						下载中{{ downing.length }}
+					</view>
+					<!-- 改变key值 -->
+					<f-list v-for="(item, index) in downing" :key="'i' + index" :item="item" :index="index">
+						<view class="flex align-center text-main" style="height: 70rpx;">
+							<text class="iconfont icon-zanting"></text>
+							<text class="ml-1">{{ item.download }}%</text>
+						</view>
+						<!-- 进度条时间，percent属性绑定下载百分比 -->
+						<progress
+							slot="bottom"
+							:percent="item.download"
+							activeColor="#009CFF"
+							:stroke-width="4"
+						></progress>
+					</f-list>
+
+					<view class="p-2 border-bottom border-light-secondary font text-muted">
+						下载完成({{ downing.length }})
+					</view>
+					<f-list
+						v-for="(item, index) in downing"
+						:key="index"
+						:item="item"
+						:index="index"
+						:showRight="false"
+					></f-list>
+				</scroll-view>
+			</swiper-item>
+		</swiper>
 	</view>
 </template>
-
 <script>
 import fList from '@/components/common/f-list.vue';
 export default {
-	components: {
-		fList
-	},
 	data() {
 		return {
 			tabIndex: 0,
@@ -67,23 +70,34 @@ export default {
 					name: '上传列表'
 				}
 			],
-			list: [
+			downing: [
 				{
 					type: 'image',
 					name: '风景.jpg',
-					data: 'https://pic-go-test.oss-cn-hangzhou.aliyuncs.com/img/53.jpeg',
-					create_time: '2019-12-21 09:00',
+					data:
+						'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
+					create_time: '2019-13-14 00:00',
 					download: 100
 				},
 				{
 					type: 'image',
-					name: '壁纸.jpg',
-					data: 'https://pic-go-test.oss-cn-hangzhou.aliyuncs.com/img/11.jpeg',
-					create_time: '2019-12-21 09:00',
+					name: '风景.jpg',
+					data:
+						'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
+					create_time: '2019-13-14 00:00',
 					download: 50
 				}
 			]
 		};
+	},
+	onLoad() {},
+	methods: {
+		changeTab(index) {
+			this.tabIndex = index;
+		}
+	},
+	components: {
+		fList
 	},
 	computed: {
 		downing() {
@@ -96,13 +110,34 @@ export default {
 				return item.download === 100;
 			});
 		}
-	},
-	methods: {
-		changeTab(index) {
-			this.tabIndex = index;
-		}
 	}
 };
 </script>
 
-<style></style>
+<style>
+.content {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.logo {
+	height: 200rpx;
+	width: 200rpx;
+	margin-top: 200rpx;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 50rpx;
+}
+
+.text-area {
+	display: flex;
+	justify-content: center;
+}
+
+.title {
+	font-size: 36rpx;
+	color: #8f8f94;
+}
+</style>

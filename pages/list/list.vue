@@ -38,7 +38,13 @@
 				<view class="p-2 border-bottom border-light-secondary font text-muted">
 					下载完成({{ downed.length }})
 				</view>
-				<f-list v-for="(item, index) in downed" :key="'d' + index" :item="item" :index="index" :showRight="false"></f-list>
+				<f-list
+					v-for="(item, index) in downed"
+					:key="'d' + index"
+					:item="item"
+					:index="index"
+					:showRight="false"
+				></f-list>
 			</scroll-view>
 		</swiper-item>
 	</view>

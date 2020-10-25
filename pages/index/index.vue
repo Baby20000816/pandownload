@@ -359,13 +359,32 @@ export default {
 			switch (item.name) {
 				case '删除':
 					this.$refs.delete.open(close => {
-						//对list进行过滤，留下未被选中的
-						this.list = this.list.filter(item => !item.checked);
-						close();
-						uni.showToast({
-							title: '删除成功',
-							icon: 'none'
+						uni.showLoading({
+							title: '删除中...',
+							mask: false
 						});
+						let ids = this.checkList.map(item => item.id).join(',');
+						//对list进行过滤，留下未被选中的
+						this.$H
+							.post(
+								'/file/delete',
+								{
+									ids
+								},
+								{ token: true }
+							)
+							.then(res => {
+								this.getData();
+								uni.showToast({
+									title: '删除成功',
+									icon: 'none'
+								});
+								uni.hideLoading();
+							})
+							.catch(err => {
+								uni.hideLoading();
+							});
+						close();
 					});
 					break;
 				case '重命名':
@@ -378,21 +397,26 @@ export default {
 								icon: 'none'
 							});
 						}
-						console.log(this.checkList[0].id+'>>>>>'+this.file_id);
+						console.log(this.checkList[0].id + '>>>>>' + this.file_id);
 						this.$H
-						.post('/file/rename',{
-							id:this.checkList[0].id,
-							file_id:this.file_id,
-							name:this.renameValue
-						},{
-							token:true
-						}).then(res=>{
-							this.checkList[0].name=this.renameValue;
-							uni.showToast({
-								title:'重命名成功',
-								icon:'none'
+							.post(
+								'/file/rename',
+								{
+									id: this.checkList[0].id,
+									file_id: this.file_id,
+									name: this.renameValue
+								},
+								{
+									token: true
+								}
+							)
+							.then(res => {
+								this.checkList[0].name = this.renameValue;
+								uni.showToast({
+									title: '重命名成功',
+									icon: 'none'
+								});
 							});
-						});
 						close();
 					});
 					break;
@@ -421,21 +445,23 @@ export default {
 						}
 						// 请求新增文件夹接口
 						this.$H
-						.post('/file/createdir',{
-							file_id:this.file_id,
-							name:this.newdirname
-						},
-						{token:true}
-						)
-						.then(res => {
-							this.getData();
-							uni.showToast({
-								title:'新建文件夹成功',
-								icon:'none'
+							.post(
+								'/file/createdir',
+								{
+									file_id: this.file_id,
+									name: this.newdirname
+								},
+								{ token: true }
+							)
+							.then(res => {
+								this.getData();
+								uni.showToast({
+									title: '新建文件夹成功',
+									icon: 'none'
+								});
 							});
-						});
 						close();
-						this.newdirname ='';
+						this.newdirname = '';
 					});
 					break;
 				default:

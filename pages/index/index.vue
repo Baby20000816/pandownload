@@ -164,7 +164,7 @@ export default {
 		};
 	},
 	onLoad() {
-		this.getShare();
+		this.getData();
 	},
 	computed: {
 		checkList() {
@@ -207,21 +207,45 @@ export default {
 		}
 	},
 	methods: {
-		getShare() {
-			uni.request({
-				url: 'http://127.0.0.1:7001/list',
-				method: 'GET',
-				success: res => {
-					this.lists = res.data.data;
-					// console.log(this.lists)
-				},
-				fail: function(err) {
-					uni.showToast({
-						title: '请求失败'
-					});
+		formatList(list){
+			return list.map(item => {
+				let type = 'none';
+				if(item.isdir===1){
+					type = 'dir';
+				}else {
+					type = item.ext.split('/')[0]||'none';
 				}
+				return {
+					type,
+					checked:false,
+					...item
+				};
 			});
 		},
+		getData(){
+			this.$H
+			.get('/file?file_id=0',{
+				token: true
+			}).then(res=>{
+				console.log(res);
+				this.lists = this.formatList(res.rows);
+			})
+		},
+		// getShare() {
+		// 	uni.request({
+		// 		url: 'http://127.0.0.1:7001/list',
+		// 		method: 'GET',
+		// 		success: res => {
+		// 			this.lists = res.data.data;
+		// 			// console.log(this.lists)
+		// 		},
+		// 		fail: function(err) {
+		// 			uni.showToast({
+		// 				title: '请求失败'
+		// 			});
+		// 		}
+		// 	});
+		// },
 		select(e) {
 			this.lists[e.index].checked = e.value;
 		},
@@ -308,19 +332,20 @@ export default {
 			}
 		},
 		doEvent(item) {
+			console.log(item);
 			switch (item.type) {
 				case 'image':
 					let images = this.lists.filter(item => {
 						return item.type === 'image';
 					});
 					uni.previewImage({
-						current: item.data,
-						urls: images.map(item => item.data)
+						current: item.url,
+						urls: images.map(item => item.url)
 					});
 					break;
 				case 'video':
 					uni.navigateTo({
-						url: '../video/video?url=' + item.data + '&title=' + item.name
+						url: '../video/video?url=' + item.url + '&title=' + item.name
 					});
 					break;
 				default:

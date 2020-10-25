@@ -57,6 +57,7 @@
 					type="text"
 					class="bg-light font-md rounded-circle"
 					placeholder="搜索网盘文件"
+					@input="search"
 				/>
 			</view>
 		</view>
@@ -279,6 +280,19 @@ export default {
 		}
 	},
 	methods: {
+		//搜索功能，关键字为空走所有数据请求接口,否则文本框关键字
+		search(e) {
+			if (e.detail.value == '') {
+				return this.getData();
+			}
+			this.$H
+				.get('/file/search?keyword=' + e.detail.value, {
+					token: true
+				})
+				.then(res => {
+					this.list = this.formatList(res.rows);
+				});
+		},
 		formatList(list) {
 			return list.map(item => {
 				let type = 'none';

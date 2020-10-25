@@ -7,7 +7,7 @@
 				:key="index"
 				:class="index === tabIndex ? 'text-main' : ''"
 				@click="changeTab(index)"
-			>
+			>0
 				<text class="font-md">{{ item.name }}</text>
 				<text
 					style="height: 8rpx;width: 140rpx;"
@@ -18,7 +18,7 @@
 		</view>
 		<!-- swiper内容随着上面的tab切换联动 -->
 		<swiper :duration="250" class="flex-1 flex" :current="tabIndex" @change="changeTab($event.detail.current)">
-			<swiper-item class="flex-1 flex" v-for="(item, index) in tabBars" :key="index">
+			<swiper-item class="flex-1 flex" v-for="(item, index0) in tabBars" :key="index0">
 				<scroll-view scroll-y="true" class="flex-1">
 					<view class="bg-light flex align-center font-sm px-2 text-muted" style="height: 60rpx;">
 						文件下载至：storage/xxxx/xxxx
@@ -27,7 +27,7 @@
 						下载中{{ downing.length }}
 					</view>
 					<!-- 改变key值 -->
-					<f-list v-for="(item, index) in downing" :key="'i' + index" :item="item" :index="index">
+					<f-list v-for="(item, index1) in downing" :key="'i' + index1" :item="item" :index="index1">
 						<view class="flex align-center text-main" style="height: 70rpx;">
 							<text class="iconfont icon-zanting"></text>
 							<text class="ml-1">{{ item.download }}%</text>
@@ -45,10 +45,10 @@
 						下载完成({{ downing.length }})
 					</view>
 					<f-list
-						v-for="(item, index) in downing"
-						:key="index"
+						v-for="(item, index2) in downing"
+						:key="index2"
 						:item="item"
-						:index="index"
+						:index="index2"
 						:showRight="false"
 					></f-list>
 				</scroll-view>
@@ -100,7 +100,7 @@ export default {
 		fList
 	},
 	computed: {
-		downing() {
+		downin() {
 			return this.list.filter(item => {
 				return item.download < 100;
 			});

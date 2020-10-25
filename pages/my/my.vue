@@ -29,6 +29,7 @@
 		</view>
 		<view
 			class="position-fixed fixed-bottom bg-main text-white flex align-center justify-center font-md py-2 rounded-circle"
+			style="margin-bottom: 100rpx;"
 			hover-class="bg-main-hover"
 			@click="logout"
 		>
@@ -85,6 +86,23 @@ export default {
 			i=Math.floor(Math.log(bytes) / Math.log(k));
 		return (bytes/Math.pow(k,i)).toPrecision(3)+''+sizes[i];
 		}
+	},
+	actions:{
+		logout({
+			state
+		}){
+			$H.post('/logout',{},{
+				token:true
+			})
+			state.user = null
+			state.token = null
+			uni.removeStorageSync('user')
+		    uni.removeStorageSync('token')
+			uni.removeStorageSync('dirs');
+			uni.reLaunch({
+				url:'/pages/login/login'
+			});
+		},
 	}
 };
 </script>

@@ -410,6 +410,9 @@ export default {
 						close();
 					});
 					break;
+					case '下载':
+					this.download();
+					break;
 				default:
 					break;
 			}
@@ -476,6 +479,47 @@ export default {
 				key: 'dirs',
 				data: JSON.stringify(this.dirs)
 			});
+		},
+		download(){
+			this.checkList.forEach(item=>{
+				if(item.isdir ===0 ){
+					const key = this.genID(8);
+					let obj={
+						name: item.name,
+						type: item.type,
+						size: item.size,
+						key,
+						progress:0,
+						status:true,
+						created_time:new Date().getTime()
+					};
+					this.$store.dispatch('createDownLoadJob',obj);
+					let url = item.url;
+					let d = uni.downloadFile({
+						url,
+						success:res=>{
+							if(res.statusCode === 200){
+								console.log('下载成功',res);
+								uni.saveFile({
+									tempFilePath:item.tempFilePath
+								});
+							}
+						}
+					});
+					d.onProgressUpdate(res=>{
+						this.$store.dispatch('updateDownLoadJob',{
+							progress: res.progress,
+							status:true,
+							key
+						});
+					});
+				}
+			});
+			uni.showToast({
+				title:'已加入下载任务',
+				icon:'none'
+			});
+			this.handleCheckAll(false);
 		}
 	},
 	computed: {

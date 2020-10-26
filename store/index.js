@@ -73,5 +73,27 @@ export default new Vuex.Store({
 				})
 			}
 		},
+		createDownLoadJob({
+			state
+		},obj){
+			state.downlist.unshift(obj)
+			uni.setStorage({
+				key: "downlist_" + state.user.id,
+				data: JSON.stringify(state.downlist)
+			})
+		},
+		updateDownLoadJob({
+			state
+		},obj){
+			let i = state.downlist.findIndex(item=>item.key === obj.key)
+			if(i!==-1){
+				state.downlist[i].progress = obj.progress
+				state.downlist[i].status = obj.status
+				uni.setStorage({
+					key:"downlist_" + state.user.id,
+					data: JSON.stringify(state.downlist)
+				})
+			}
+		}
 	}
 })

@@ -280,6 +280,39 @@ export default {
 		}
 	},
 	methods: {
+		genID(length){
+			return Number(Math.random()
+				.toString()
+				.substr(3,length)+Date.now()).toString(36);
+		},
+		upload(file,type){
+			let t =type;
+			const key = this.genID(8);
+			let obj = {
+				name:file.name,
+				type:t,
+				size:file.size,
+				key,
+				progress:0,
+				status:true,
+				created_time:new Date().getTime()
+			};
+			this.$store.dispatch('createUploadJob',obj);
+			this.$H
+			.upload('/upload?file_id='+this.file_id,{
+				filePath:file.path
+			},
+			p=>{
+				this.$store.dispatch('updateUploadJob',{
+					status:true,
+					progress:p,
+					key
+				});
+			}
+			).then(res=>{
+				this.getData();
+			})
+		},
 		//搜索功能，关键字为空走所有数据请求接口,否则文本框关键字
 		search(e) {
 			if (e.detail.value == '') {
@@ -449,6 +482,16 @@ export default {
 		handleAddEvent(item) {
 			this.$refs.add.close();
 			switch (item.name) {
+				case '上传图片':
+				uni.chooseImage({
+					count:9,
+					success:res=>{
+						res.tempFiles.forEach(item=>{
+							this.upload(item,'image');
+						});
+					}
+				});
+				break;
 				case '新建文件夹':
 					this.$refs.newdir.open(close => {
 						if (this.newdirname == '') {

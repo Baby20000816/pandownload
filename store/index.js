@@ -4,6 +4,8 @@ Vue.use(Vuex)
 import $H from '../common/request.js';
 export default new Vuex.Store({
 	state: {
+		uploadList:[],
+		downlist:[],
 		user:null,
 		token:null
 	},
@@ -37,6 +39,39 @@ export default new Vuex.Store({
 		updateSize({state},e){
 			state.user.total_size = e.total_size
 			state.user.used_size = e.used_size
-		}
+		},
+		initList({
+			state
+		}){
+			if(state.user){
+				let d = uni.getStorageSync("downlist_"+state.user.id)
+				let u = uni.getStorageSync("uploadList_"+state.user.id)
+				
+				state.downlist = d?JSON.parse(d):[],
+				state.uploadList = u?JSON.parse(u):[]
+			}
+		},
+		createUploadJob({
+			state
+		},obj){
+			state.uploadList.unshift(obj)
+			uni.setStorage({
+				key:"uploadList_"+state.user.id,
+				data:JSON.stringify(state.uploadList)
+			})
+		},
+		updateUploadJob({
+			state
+		},obj){
+			let i = state.uploadList.findIndex(item =>item.key === obj.key)
+			if(i!==-1){
+				state.uploadList[i].progresss = obj.progress
+				state.uploadList[i].status = obj.status
+				uni.setStorage({
+					key:"uploadList_"+state.user.id,
+					data:JSON.stringify(state.uploadList)
+				})
+			}
+		},
 	}
 })

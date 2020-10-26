@@ -2,7 +2,7 @@ export default {
 	// 全局配置
 	common: {
 		// #ifndef H5
-		baseUrl: "http://127.0.0.1:7001",
+		baseUrl: "https://share.utools.club",
 		// #endif
 		// #ifdef H5
 		baseUrl: "/api",
@@ -18,7 +18,7 @@ export default {
 	// 请求返回promise
 	request(options = {}) {
 		// 组织参数
-		options.url = "http://127.0.0.1:7001" + options.url
+		options.url = this.common.baseUrl + options.url
 		options.header = options.header || this.common.header
 		options.data = options.data || this.common.data
 		options.method = options.method || this.common.method

@@ -43,6 +43,22 @@
 				}
 			}
         }
+        ,{
+            "path" : "pages/shareurl/shareurl",
+            "style" : {
+				"navigationBarTitleText": "分享内容",
+				"enablePullDownRefresh": false,
+				"app-plus":{
+					"titleNView": false
+				}
+			}
+        }
+        ,{
+            "path" : "pages/save/save",
+            "style" : {
+				"navigationBarTextStyle":"保存目录"
+			}
+        }
     ],
 	"globalStyle": {
 

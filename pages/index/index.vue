@@ -223,38 +223,43 @@ export default {
 		this.getData();
 	},
 	methods: {
-		genID(length){
-			return Number(Math.random()
-				.toString()
-				.substr(3,length)+Date.now()).toString(36);
+		genID(length) {
+			return Number(
+				Math.random()
+					.toString()
+					.substr(3, length) + Date.now()
+			).toString(36);
 		},
-		upload(file,type){
-			let t =type;
+		upload(file, type) {
+			let t = type;
 			const key = this.genID(8);
 			let obj = {
-				name:file.name,
-				type:t,
-				size:file.size,
+				name: file.name,
+				type: t,
+				size: file.size,
 				key,
-				progress:0,
-				status:true,
-				created_time:new Date().getTime()
+				progress: 0,
+				status: true,
+				created_time: new Date().getTime()
 			};
-			this.$store.dispatch('createUploadJob',obj);
+			this.$store.dispatch('createUploadJob', obj);
 			this.$H
-			.upload('/upload?file_id='+this.file_id,{
-				filePath:file.path
-			},
-			p=>{
-				this.$store.dispatch('updateUploadJob',{
-					status:true,
-					progress:p,
-					key
+				.upload(
+					'/upload?file_id=' + this.file_id,
+					{
+						filePath: file.path
+					},
+					p => {
+						this.$store.dispatch('updateUploadJob', {
+							status: true,
+							progress: p,
+							key
+						});
+					}
+				)
+				.then(res => {
+					this.getData();
 				});
-			}
-			).then(res=>{
-				this.getData();
-			})
 		},
 		//搜索功能，关键字为空走所有数据请求接口,否则文本框关键字
 		search(e) {
@@ -410,12 +415,42 @@ export default {
 						close();
 					});
 					break;
-					case '下载':
+				case '下载':
 					this.download();
+					break;
+				case '分享':
+					this.share();
+					this.handleCheckAll(false);
 					break;
 				default:
 					break;
 			}
+		},
+		share() {
+			this.$H
+			.post('/share/create',
+			{
+				file_id: this.checkList[0].id
+			},
+			{token: true}).then(res=>{
+			uni.showModal({
+				content:res,
+				showCancel:false,
+				success: result => {
+					// #ifndef H5
+				uni.setClipboardData({
+					data:res,
+					success: () => {
+						uni.showToast({
+							title:'复制成功',
+							icon:'none'
+						});
+					}
+				});
+				// #endif
+				}
+			})
+		})
 		},
 		// 打开添加操作条
 		openAddDialog() {
@@ -429,15 +464,15 @@ export default {
 			this.$refs.add.close();
 			switch (item.name) {
 				case '上传图片':
-				uni.chooseImage({
-					count:9,
-					success:res=>{
-						res.tempFiles.forEach(item=>{
-							this.upload(item,'image');
-						});
-					}
-				});
-				break;
+					uni.chooseImage({
+						count: 9,
+						success: res => {
+							res.tempFiles.forEach(item => {
+								this.upload(item, 'image');
+							});
+						}
+					});
+					break;
 				case '新建文件夹':
 					this.$refs.newdir.open(close => {
 						if (this.newdirname == '') {
@@ -480,44 +515,52 @@ export default {
 				data: JSON.stringify(this.dirs)
 			});
 		},
-		download(){
-			this.checkList.forEach(item=>{
-				if(item.isdir ===0 ){
+		download() {
+			this.checkList.forEach(item => {
+				if (item.isdir === 0) {
 					const key = this.genID(8);
-					let obj={
+
+					let obj = {
 						name: item.name,
 						type: item.type,
 						size: item.size,
 						key,
-						progress:0,
-						status:true,
-						created_time:new Date().getTime()
+						progress: 0,
+						status: true,
+						created_time: new Date().getTime()
 					};
-					this.$store.dispatch('createDownLoadJob',obj);
+
+					this.$store.dispatch('createDownLoadJob', obj);
+
 					let url = item.url;
+
 					let d = uni.downloadFile({
 						url,
-						success:res=>{
-							if(res.statusCode === 200){
-								console.log('下载成功',res);
+						success: res => {
+							if (res.statusCode === 200) {
+								console.log('下载成功', res);
+								// #ifdef H5
 								uni.saveFile({
-									tempFilePath:item.tempFilePath
+									tempFilePath: item.tempFilePath
 								});
+								// #endif
 							}
 						}
 					});
-					d.onProgressUpdate(res=>{
-						this.$store.dispatch('updateDownLoadJob',{
+
+					d.onProgressUpdate(res => {
+						this.$store.dispatch('updateDownLoadJob', {
 							progress: res.progress,
-							status:true,
+							status: true,
 							key
 						});
 					});
 				}
 			});
+
 			uni.showToast({
-				title:'已加入下载任务',
-				icon:'none'
+				title: '已加入下载任务',
+				icon: 'none'
 			});
 			this.handleCheckAll(false);
 		}
@@ -577,8 +620,9 @@ export default {
 					name: '重命名'
 				}
 			];
-		}
-	},
+		},
+		
+	}
 };
 </script>
 

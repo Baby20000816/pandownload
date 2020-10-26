@@ -3,10 +3,14 @@
 		onLaunch: function() {
 			console.log('App Launch');
 			// console.log(this.$store.state.test);
-			this.$store.dispatch('initUser')
+			this.$store.dispatch('initUser');
+			this.$store.dispatch('initList');
 		},
 		onShow: function() {
 			console.log('App Show')
+			if(this.$store.state.user){
+				this.$store.dispatch('getShareUrl');
+			}
 		},
 		onHide: function() {
 			console.log('App Hide')

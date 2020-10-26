@@ -24,20 +24,15 @@
 					<template v-if="index === 0"></template>
 					<template v-else>
 						<view class="p-2 border-bottom border-light-secondary font text-muted">
-							上传中{{uploading.length}}
+							上传中{{ uploading.length }}
 						</view>
 						<f-list v-for="(item, index) in uploading" :key="'i' + index" :item="item" :index="index">
 							<view class="flex align-center text-main" style="height: 70rpx;">
 								<text class="iconfont icon-zanting"></text>
-								<text class="ml-1">{{ item.download }}%</text>
+								<text class="ml-1">{{ item.progress}}%</text>
 							</view>
 							<!-- 进度条时间，percent属性绑定下载百分比 -->
-							<progress
-								slot="bottom"
-								:percent="item.progress"
-								activeColor="#009CFF"
-								:stroke-width="4"
-							/>
+							<progress slot="bottom" :percent="item.progress" activeColor="#009CFF" :stroke-width="4" />
 						</f-list>
 
 						<view class="p-2 border-bottom border-light-secondary font text-muted">
@@ -74,24 +69,24 @@ export default {
 					name: '上传列表'
 				}
 			],
-			downing: [
-				{
-					type: 'image',
-					name: '风景.jpg',
-					data:
-						'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
-					create_time: '2019-13-14 00:00',
-					download: 100
-				},
-				{
-					type: 'image',
-					name: '风景.jpg',
-					data:
-						'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
-					create_time: '2019-13-14 00:00',
-					download: 50
-				}
-			]
+			// downing: [
+			// 	{
+			// 		type: 'image',
+			// 		name: '风景.jpg',
+			// 		data:
+			// 			'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
+			// 		create_time: '2019-13-14 00:00',
+			// 		download: 100
+			// 	},
+			// 	{
+			// 		type: 'image',
+			// 		name: '风景.jpg',
+			// 		data:
+			// 			'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
+			// 		create_time: '2019-13-14 00:00',
+			// 		download: 50
+			// 	}
+			// ]
 		};
 	},
 	onLoad() {},

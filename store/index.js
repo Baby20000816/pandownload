@@ -4,8 +4,8 @@ Vue.use(Vuex)
 import $H from '../common/request.js';
 export default new Vuex.Store({
 	state: {
-		uploadList:[],
-		downlist:[],
+		uploadList: [],
+		downlist: [],
 		user:null,
 		token:null
 	},
@@ -44,32 +44,32 @@ export default new Vuex.Store({
 			state
 		}){
 			if(state.user){
-				let d = uni.getStorageSync("downlist_"+state.user.id)
-				let u = uni.getStorageSync("uploadList_"+state.user.id)
+				let d = uni.getStorageSync("downlist_" + state.user.id)
+				let u = uni.getStorageSync("uploadList_" + state.user.id)
 				
-				state.downlist = d?JSON.parse(d):[],
-				state.uploadList = u?JSON.parse(u):[]
+				state.downlist = d ? JSON.parse(d) : []
+				state.uploadList = u ? JSON.parse(u) : []
 			}
 		},
 		createUploadJob({
 			state
-		},obj){
+		}, obj){
 			state.uploadList.unshift(obj)
 			uni.setStorage({
-				key:"uploadList_"+state.user.id,
-				data:JSON.stringify(state.uploadList)
+				key: "uploadList_" + state.user.id,
+				data: JSON.stringify(state.uploadList)
 			})
 		},
 		updateUploadJob({
 			state
-		},obj){
-			let i = state.uploadList.findIndex(item =>item.key === obj.key)
-			if(i!==-1){
+		}, obj){
+			let i = state.uploadList.findIndex(item => item.key === obj.key)
+			if(i !== -1) {
 				state.uploadList[i].progresss = obj.progress
 				state.uploadList[i].status = obj.status
 				uni.setStorage({
-					key:"uploadList_"+state.user.id,
-					data:JSON.stringify(state.uploadList)
+					key: "uploadList_" + state.user.id,
+					data: JSON.stringify(state.uploadList)
 				})
 			}
 		},

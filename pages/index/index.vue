@@ -222,63 +222,6 @@ export default {
 		}
 		this.getData();
 	},
-	computed: {
-		file_id() {
-			let l = this.dirs.length;
-			if (l === 0) {
-				return 0;
-			}
-			return this.dirs[l - 1].id;
-		},
-		current() {
-			let l = this.dirs.length;
-			if (l === 0) {
-				return false;
-			}
-			return this.dirs[l - 1];
-		},
-		// 选中列表
-		checkList() {
-			return this.list.filter(item => item.checked);
-		},
-		// 选中数量
-		checkCount() {
-			return this.checkList.length;
-		},
-		// 操作菜单
-		actions() {
-			if (this.checkCount > 1) {
-				return [
-					{
-						icon: 'icon-xiazai',
-						name: '下载'
-					},
-					{
-						icon: 'icon-shanchu',
-						name: '删除'
-					}
-				];
-			}
-			return [
-				{
-					icon: 'icon-xiazai',
-					name: '下载'
-				},
-				{
-					icon: 'icon-fenxiang-1',
-					name: '分享'
-				},
-				{
-					icon: 'icon-shanchu',
-					name: '删除'
-				},
-				{
-					icon: 'icon-chongmingming',
-					name: '重命名'
-				}
-			];
-		}
-	},
 	methods: {
 		genID(length){
 			return Number(Math.random()
@@ -534,7 +477,64 @@ export default {
 				data: JSON.stringify(this.dirs)
 			});
 		}
-	}
+	},
+	computed: {
+		file_id() {
+			let l = this.dirs.length;
+			if (l === 0) {
+				return 0;
+			}
+			return this.dirs[l - 1].id;
+		},
+		current() {
+			let l = this.dirs.length;
+			if (l === 0) {
+				return false;
+			}
+			return this.dirs[l - 1];
+		},
+		// 选中列表
+		checkList() {
+			return this.list.filter(item => item.checked);
+		},
+		// 选中数量
+		checkCount() {
+			return this.checkList.length;
+		},
+		// 操作菜单
+		actions() {
+			if (this.checkCount > 1) {
+				return [
+					{
+						icon: 'icon-xiazai',
+						name: '下载'
+					},
+					{
+						icon: 'icon-shanchu',
+						name: '删除'
+					}
+				];
+			}
+			return [
+				{
+					icon: 'icon-xiazai',
+					name: '下载'
+				},
+				{
+					icon: 'icon-fenxiang-1',
+					name: '分享'
+				},
+				{
+					icon: 'icon-shanchu',
+					name: '删除'
+				},
+				{
+					icon: 'icon-chongmingming',
+					name: '重命名'
+				}
+			];
+		}
+	},
 };
 </script>
 

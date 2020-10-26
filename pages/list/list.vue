@@ -21,7 +21,36 @@
 		<swiper :duration="250" class="flex-1 flex" :current="tabIndex" @change="changeTab($event.detail.current)">
 			<swiper-item class="flex-1 flex" v-for="(item, index) in tabBars" :key="index">
 				<scroll-view scroll-y="true" class="flex-1">
-					<template v-if="index === 0"></template>
+					<template v-if="index === 0">
+						<view style="height: 60rpx;" class="bg-light flex align-center font-sm px-2 text-muted">
+							文件下载至:_doc/uniapp_temp_1603680037252/download/
+						</view>
+						<view class="p-2 border-bottom border-light-secondary font text-muted">
+							下载中{{ downing.length }}
+						</view>
+						<f-list v-for="(item, index) in downing" :key="'i' + index" :item="item" :index="index">
+							<view style="height: 70rpx;" class="flex align-center text-main">
+								<text class="iconfont icon-zanting"></text>
+								<text class="ml-1">{{ item.progress }}</text>
+							</view>
+							<progress
+								slot="bottom"
+								:percent="item.progress"
+								activeColor="#009CFF"
+								:stroke-width="4"
+							></progress>
+						</f-list>
+						<view class="p-2 border-bottom border-light-secondary font text-muted">
+							下载完成{{ downed.length }}
+						</view>
+						<f-list
+							v-for="(item, index) in downed"
+							:key="'d' + index"
+							:item="item"
+							:index="index"
+							:showRight="false"
+						></f-list>
+					</template>
 					<template v-else>
 						<view class="p-2 border-bottom border-light-secondary font text-muted">
 							上传中{{ uploading.length }}
@@ -29,10 +58,15 @@
 						<f-list v-for="(item, index) in uploading" :key="'i' + index" :item="item" :index="index">
 							<view class="flex align-center text-main" style="height: 70rpx;">
 								<text class="iconfont icon-zanting"></text>
-								<text class="ml-1">{{ item.progress}}%</text>
+								<text class="ml-1">{{ item.progress }}%</text>
 							</view>
 							<!-- 进度条时间，percent属性绑定下载百分比 -->
-							<progress slot="bottom" :percent="item.progress" activeColor="#009CFF" :stroke-width="4" />
+							<progress
+								slot="bottom"
+								:percent="item.progress"
+								activeColor="#009CFF"
+								:stroke-width="4"
+							></progress>
 						</f-list>
 
 						<view class="p-2 border-bottom border-light-secondary font text-muted">
@@ -40,7 +74,7 @@
 						</view>
 						<f-list
 							v-for="(item, index) in uploaded"
-							:key="'d'+index"
+							:key="'d' + index"
 							:item="item"
 							:index="index"
 							:showRight="false"
@@ -69,34 +103,25 @@ export default {
 					name: '上传列表'
 				}
 			],
-			// downing: [
-			// 	{
-			// 		type: 'image',
-			// 		name: '风景.jpg',
-			// 		data:
-			// 			'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
-			// 		create_time: '2019-13-14 00:00',
-			// 		download: 100
-			// 	},
-			// 	{
-			// 		type: 'image',
-			// 		name: '风景.jpg',
-			// 		data:
-			// 			'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
-			// 		create_time: '2019-13-14 00:00',
-			// 		download: 50
-			// 	}
-			// ]
+			list: [
+				{
+					type: 'image',
+					name: '风景.jpg',
+					data:
+						'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
+					create_time: '2019-13-14 00:00',
+					download: 100
+				},
+				{
+					type: 'image',
+					name: '风景.jpg',
+					data:
+						'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=3311552614,3643030730&fm=26&gp=0.jpg',
+					create_time: '2019-13-14 00:00',
+					download: 50
+				}
+			]
 		};
-	},
-	onLoad() {},
-	methods: {
-		changeTab(index) {
-			this.tabIndex = index;
-		}
-	},
-	components: {
-		fList
 	},
 	computed: {
 		...mapState({
@@ -111,6 +136,21 @@ export default {
 			return this.uploadList.filter(item => {
 				return item.progress === 100;
 			});
+		},
+		downing() {
+			return this.list.filter(item => {
+				return item.download < 100;
+			});
+		},
+		downed() {
+			return this.list.filter(item => {
+				return item.download === 100;
+			});
+		},
+	},
+	methods: {
+		changeTab(index) {
+			this.tabIndex = index;
 		}
 	}
 };
